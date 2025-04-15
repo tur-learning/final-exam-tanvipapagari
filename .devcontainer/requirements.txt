@@ -1,0 +1,7 @@
+thefuzz
+scipy
+shapely
+geopy
+requests
+gradio_client
+pillow

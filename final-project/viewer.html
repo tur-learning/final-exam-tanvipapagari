@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>GLB Viewer</title>
+    <!-- Load the model-viewer library from a CDN -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        background: #fafafa;
+      }
+      model-viewer {
+        width: 1600px;
+        height: 1000px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The model-viewer component to display the GLB file -->
+    <model-viewer 
+      src="model.glb" 
+      alt="A 3D model" 
+      auto-rotate 
+      camera-controls 
+      ar 
+      ar-modes="scene-viewer quick-look webxr"
+    >
+    </model-viewer>
+  </body>
+</html>
