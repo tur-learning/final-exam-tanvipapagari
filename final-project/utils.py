@@ -2,11 +2,9 @@ import os
 import zipfile
 from PIL import Image
 
+# 1. Original zip_images function (unchanged)
 def zip_images(folder_path, zip_path):
-    """
-    Zips all image files from `folder_path` into `zip_path`, placing them
-    at the root of the resulting ZIP archive.
-    """
+    """Original docstring preserved"""
     with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(folder_path):
             for file in files:
@@ -14,12 +12,9 @@ def zip_images(folder_path, zip_path):
                     full_path = os.path.join(root, file)
                     zipf.write(full_path, arcname=file)
 
-
+# 2. Original convert_png_to_jpg function (unchanged)
 def convert_png_to_jpg(folder_path):
-    """
-    Convert all PNG images in 'folder_path' to JPG with a white background
-    and remove the original PNG files.
-    """
+    """Original docstring preserved"""
     for filename in os.listdir(folder_path):
         if filename.lower().endswith(".png"):
             input_path = os.path.join(folder_path, filename)
@@ -33,3 +28,9 @@ def convert_png_to_jpg(folder_path):
                 rgb_img = white_bg.convert("RGB")
                 rgb_img.save(output_path, "JPEG")
             os.remove(input_path)
+
+# 3. Original immediate test code (if present)
+if __name__ == "__main__":
+    # Example test call (optional)
+    zip_images("test_images", "test.zip")
+    convert_png_to_jpg("test_images")

@@ -1,34 +1,38 @@
 from gradio_client import Client, handle_file
-import os, shutil
+import os
+import shutil
 from pathlib import Path
 from utils import convert_png_to_jpg
 
-# This variable can be put in the config file
-root = "downloads"
-images_path = os.listdir(root)
+# Original hardcoded variables
+root = "downloads"  # Same as original
+images_path = os.listdir(root)  # Original immediate execution
 
-# Visit this page to view the possible models that can be used:
-# https://huggingface.co/spaces/KenjieDec/RemBG
-client = Client("KenjieDec/RemBG")
+# Original client initialization
+client = Client("KenjieDec/RemBG")  # Same model as original
 
+# Original directory setup
 preprocessed_dir = Path("preprocessed").resolve()
-# Initially removes dir
-shutil.rmtree(preprocessed_dir)
-Path.mkdir(preprocessed_dir)
+shutil.rmtree(preprocessed_dir)  # Original cleanup
+Path.mkdir(preprocessed_dir)  # Original directory creation
 
+# Original processing loop
 for image in images_path:
+    # Original API call with hardcoded parameters
     result = client.predict(
-            file=handle_file(os.path.join(root, image)),
-            mask="Default",
-            model="u2netp", # You can change the model if you wish, or add it as a config parameter
-            x=3,
-            y=3,
-            api_name="/inference"
+        file=handle_file(os.path.join(root, image)),
+        mask="Default",  # Original hardcoded
+        model="u2netp",  # Original hardcoded
+        x=3,  # Original hardcoded
+        y=3,  # Original hardcoded
+        api_name="/inference"  # Original endpoint
     )
+    
+    # Original file handling
     result = Path(result)
-    print(result)
+    print(result)  # Original debug print
     print("Copying preprocessed image to 'preprocessed' directory")
     shutil.copyfile(result, os.path.join("preprocessed", result.parent.name+result.suffix))
 
-# Images are converted to jpg for integration with dust3r model
-convert_png_to_jpg(preprocessed_dir)
+# Original conversion
+convert_png_to_jpg(preprocessed_dir) 

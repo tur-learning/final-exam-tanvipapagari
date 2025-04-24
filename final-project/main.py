@@ -1,21 +1,38 @@
 # 1
 # Import necessary modules
 import json
-import server
+import download_images
+import preprocess
+import dust3r
+import mast3r
 
-# 2
-# input config.json to read configurations
+# Read config file
 with open("config.json") as f:
     config = json.load(f)
 
-
-# 3
-# implement logic to use different models based on the configured parameters
+# Implement logic based on configured parameters
 if config["preprocess_image"]:
-    print("We are going to preprocess the image to remove the background")
+    print("Preprocessing images to remove background")
+    preprocessed_images = preprocess.remove_background(
+        input_dir="downloads",
+        output_dir="preprocessed"
+    )
 
 if config["use_dust3r"]:
-    print("We are going to use dust3r APIs")
+    print("Using dust3r APIs")
+    dust3r.generate_model(
+        image_dir="preprocessed",
+        output_path="model.glb"
+    )
 
 if config["use_mast3r"]:
-    print("We are going to use mast3r APIs")
+    print("Using mast3r APIs")
+    mast3r.generate_model(
+        image_dir="preprocessed",
+        output_path="model.glb",
+        hf_token=config["mast3r"]["hf_token"]
+    )
+
+print("Processing complete")
+# 3
+# implement logic to use different models based on the configured parameters
