@@ -1,57 +1,70 @@
 # 1
 # Import necessary modules
 import json
+import shutil
 from download_images import download_google_drive_file, file_ids
 from dust3r import send_request
-from mast3r import make3D
+from mast3r import mast3r
+import os
+from utils import update_config
 from preprocess import preprocess
-from utils import load_data, startup, inputconfig
 import subprocess
-
-# To download the info from photos.zip
-# for i in file_ids:
-#     download_google_drive_file(i)
-
-# startup functions (download a new zip, add/delete photos from downloads)
-startup()
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------------------
 # 2
 # input config.json to read configurations
 
-inputconfig()
+for i in file_ids:
+    download_google_drive_file(i)
 
-# -------------------------------------------------------------------------------------------------------------------------------------
+preprocess()
 
-# # 3
-# # get user input on configured parameters
+with open("config.json") as f:
+    config = json.load(f)
 
-config = load_data("config.json")
+#---------------------------------------------------------------------------------------------
+choice = ""
+while choice not in ["d", "m"]:
+    config["preprocess_image"] = input("Do you want to preprocess images? Input y/n: ").lower() == 'y'
+    choice = input("Choose which model to use ('d' for Dust3r, 'm' for Mast3r): ").lower()
+    if choice == "d":
+            config["use_dust3r"] = True
+            config["use_mast3r"] = False
+    elif choice == "m":
+            config["use_dust3r"] = False
+            config["use_mast3r"] = True
+    else:
+            print("Invalid input. Please choose 'd' for Dust3r or 'm' for Mast3r.")
+    
+if config["use_dust3r"] == True:
+     dus = send_request("preprocessed.zip")
+else:
+      mas = mast3r()
 
-dust3r = config.get("use_dust3r", None)
-mast3r = config.get("use_mast3r", None)
-preprocessing = config.get("preprocess_image", None)
 
-print("\nStarting 3D image generation\n")
+#------------------------------------------------------------------------------------------------------------------------   
+config["view_output"] = input("Do you want to view the output? Input y/n: ").lower() == 'y'
+if config["view_output"] == True:
+     try:
+          subprocess.run(["python", "-m", "http.server", "8160"])
+     except OSError:
+            print("Copy and paste this into your shell: 'python -m http.server'")
+    
+#--------------------------------------------------------    
+with open("config.json", "w") as f:
+        json.dump(config, f)
 
-if preprocessing == False:
-    if dust3r == True:
-        print("We are going to use dust3r APIs")
-        send_request("photos.zip")
-    if mast3r == True:
-        print("We are going to use mast3r APIs")
-        make3D("raw")
-elif preprocessing == True:
+print("Configuration updated!")
+
+
+#-------------------------------------------------------------------------------------------------------------------------
+# 3
+# implement logic to use different models based on the configured parameters
+if config["preprocess_image"]:
     print("We are going to preprocess the image to remove the background")
-    preprocess()
-    if dust3r == True:
-        print("We are going to use dust3r APIs")
-        send_request("processed_images.zip")
-    if mast3r == True:
-        print("We are going to use mast3r APIs")
-        make3D("process")
+else:
+    print("The images will not be preprocessed.")
 
-# run "python -m http.server"
-subprocess.run(["python", "-m", "http.server", "8000"])
+if config["use_dust3r"]:
+    print("We are going to use dust3r APIs")
+
+if config["use_mast3r"]:
+    print("We are going to use mast3r APIs")
