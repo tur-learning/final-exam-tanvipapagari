@@ -2,6 +2,7 @@ from gradio_client import Client, handle_file
 import os, shutil
 from pathlib import Path
 from utils import convert_png_to_jpg, zip_images
+from download_images import file_ids, local_paths
 
 def preprocess():
     # This variable can be put in the config file
@@ -17,38 +18,29 @@ def preprocess():
     try:
         shutil.rmtree(preprocessed_dir)
     except FileNotFoundError:
-        pass  # Skips deletion if the folder isn’t found
-    preprocessed_dir.mkdir(exist_ok=True)
+        pass
+    Path.mkdir(preprocessed_dir)
 
-    for idx, image in enumerate(images_path, start=1):
-        try: 
-            result = client.predict(
+    for image in images_path:
+        result = client.predict(
                 file=handle_file(os.path.join(root, image)),
                 mask="Default",
-                model="u2netp",
+                model="u2netp", # You can change the model if you wish, or add it as a config parameter
                 x=3,
                 y=3,
                 api_name="/inference"
-            )
-            print("Image processing sucessful")
-        except:
-            print("Image processing unsucessful")
-        
+        )
         result = Path(result)
         print(result)
         print("Copying preprocessed image to 'preprocessed' directory")
-        processed_filename = f"processed_image_{idx}{result.suffix}"
-        shutil.copyfile(result, os.path.join("preprocessed", processed_filename))
+        shutil.copyfile(result, os.path.join("preprocessed", result.parent.name+result.suffix))
 
-    print("\n")
-
-    # images are converted to jpg for integration with dust3r model
+    # Images are converted to jpg for integration with dust3r model
     convert_png_to_jpg(preprocessed_dir)
 
-    # delete existing processed_images.zip if it exists
-    processed_zip = Path("processed_images.zip")
-    if processed_zip.exists():
-        processed_zip.unlink()
-        
-    # create a zip archive of processed images
-    zip_images("preprocessed", "processed_images.zip")
+    preprocessed_zip = Path("preprocessed.zip")
+    if preprocessed_zip.exists():
+        preprocessed_zip.unlink()
+       
+
+    zip_images("preprocessed_photos", "preprocessed.zip")
