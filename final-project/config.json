@@ -1,8 +1,16 @@
 {
-    "download": false,
+    "download": true,
     "image_directory": "path/to/image/dir",
-    "use_dust3r": true,
-    "use_mast3r": true,
-    "preprocess_image": true,
-    "view_output": true
+    "use_dust3r": false,
+    "use_mast3r": false,
+    "preprocess_image": false,
+    "view_output": true,
+    "file_ids": [
+        "17QxZpfjLsL5BElf0OYNwBU0hq4wr1MG_",
+        "19vAoGLwLDXrr620WHmpkNXiNwZXCVcnt",
+        "1LANtLNxl5UzKY1j7gofH-kdugJeEtkLX",
+        "1DEQyClx4Be_hQtq1f3xtc2X9Smz8R686",
+        "1nIhExOE8asL0-7SSHx87BUij5TPxXfwj",
+        "IMG_6531"
+    ]
 }
