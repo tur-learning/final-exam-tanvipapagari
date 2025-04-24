@@ -8,7 +8,7 @@ def make3D(input):
     # Download files
     if input == "process":
         extract_dir = "preprocessed"
-        with zipfile.ZipFile("/workspaces/final-exam-HultzHubbard/final-project/processed_images.zip", "r") as zip_ref:
+        with zipfile.ZipFile("/workspaces/final-exam-tanvipapagari/final-project/processed_images.zip", "r") as zip_ref:
             zip_ref.extractall(extract_dir)
             print(f"Extracted files to {extract_dir}")
         local_paths = [os.path.join(extract_dir, fname) for fname in os.listdir(extract_dir)]

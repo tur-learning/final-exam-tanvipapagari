@@ -67,7 +67,7 @@ def download_zip(zip, extract):
 def add_photo(filepath, id):
     # copy image from dowloaded images and past into downloads
     source_file = filepath
-    destination_folder = "/workspaces/final-exam-HultzHubbard/final-project/downloads"
+    destination_folder = "/workspaces/final-exam-tanvipapagari/final-project/downloads"
     shutil.copy(source_file, destination_folder)
 
     old_file = (f"{destination_folder}/{id}.JPEG")
@@ -75,7 +75,7 @@ def add_photo(filepath, id):
     os.rename(old_file, new_file)
 
     # update file_ids
-    json_file = "/workspaces/final-exam-HultzHubbard/final-project/config.json"
+    json_file = "/workspaces/final-exam-tanvipapagari/final-project/config.json"
     with open(json_file, "r") as file:
         data = json.load(file)
     key = "file_ids"
@@ -88,7 +88,7 @@ def add_photo(filepath, id):
         json.dump(data, file, indent=4)
 
     # update photos.zip
-    zip_file = "/workspaces/final-exam-HultzHubbard/final-project/photos.zip"
+    zip_file = "/workspaces/final-exam-tanvipapagari/final-project/photos.zip"
     os.remove(zip_file)
     zip_images("downloads", "photos.zip")
 
@@ -103,7 +103,7 @@ def delete_photo(filepath, id):
         print("File not found.")
 
     # update file_ids
-    json_file = "/workspaces/final-exam-HultzHubbard/final-project/config.json"
+    json_file = "/workspaces/final-exam-tanvipapagari/final-project/config.json"
     with open(json_file, "r") as file:
         data = json.load(file)
     key = "file_ids"
@@ -115,7 +115,7 @@ def delete_photo(filepath, id):
         json.dump(data, file, indent=4)
 
     # update photos.zip
-    zip_file = "/workspaces/final-exam-HultzHubbard/final-project/photos.zip"
+    zip_file = "/workspaces/final-exam-tanvipapagari/final-project/photos.zip"
     os.remove(zip_file)
     zip_images("downloads", "photos.zip")
 
